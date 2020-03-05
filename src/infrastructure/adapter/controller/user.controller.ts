@@ -1,12 +1,28 @@
-import { Controller, Get } from '@nestjs/common';
-import { AppService } from '../../../app.service';
+import { User } from 'src/domain/model/user';
 
-@Controller('user/')
+import { Controller, Get, Param, Put, Res, HttpStatus } from '@nestjs/common';
+import { Observable, of } from 'rxjs';
+import { Response } from 'express';
+import { UserService } from '../../../application/caseuse/user.service';
+
+
+@Controller()
 export class UserController {
-    constructor(private readonly appService: AppService) {}
+  constructor(private readonly userService: UserService){}
+  
+/*   @Get(':dni')
+  findByDni(@Res() res: Response, @Param('dni') dni: number ) {
+    res.status(HttpStatus.OK).json(this.userService.findByDni({dni: dni}));
+  } */
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  @Get(':dni')
+  findByDni(@Param('dni') dni: number ): Observable<any> {
+    return of(this.userService.findByDni({dni: dni}));
   }
+
+  @Put(':dni')
+  updateAmountMovies( @Param('dni') dni: string ): Observable<any>  { 
+    return of({mensaje:`su cedula es: ${ dni }`});
+  }
+
 }
