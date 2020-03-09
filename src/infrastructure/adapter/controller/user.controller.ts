@@ -1,4 +1,4 @@
-import { User } from 'src/domain/model/user';
+import { Users } from 'src/domain/model/user.entity';
 
 import { Controller, Get, Param, Put, Res, HttpStatus } from '@nestjs/common';
 import { Observable, of } from 'rxjs';
@@ -21,8 +21,8 @@ export class UserController {
   }
 
   @Put(':dni')
-  updateAmountMovies( @Param('dni') dni: string ): Observable<any>  { 
-    return of({mensaje:`su cedula es: ${ dni }`});
+  updateAmountMovies( @Param('dni') dni: number ): Observable<any>  { 
+    return of(this.userService.UpdateUser({dni: dni}));
   }
 
 }
