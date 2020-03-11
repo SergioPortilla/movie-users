@@ -1,17 +1,17 @@
 import { createConnection } from 'typeorm';
-import { User } from '../../../../domain/model/user.entity';
+import { UserEntity } from '../../entity/user.entity';
 
 export const databaseProviders = [
     {
         provide: 'DATABASE_CONNECTION',
         useFactory: async () => await createConnection({
             type: "postgres",
-            host: "localhost",
+            host: "127.0.0.1",
             port: 5432,
-            username: "postgres",
+            username: "root",
             password: "root",
             database: "users",
-            entities: [ User ],
+            entities: [ UserEntity ],
             synchronize: true
         }),
     },

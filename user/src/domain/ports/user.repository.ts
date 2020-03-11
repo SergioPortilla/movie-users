@@ -1,4 +1,4 @@
-import { User } from '../model/user.entity';
+import { User } from '../model/user';
 
 export interface UserRepository {
 

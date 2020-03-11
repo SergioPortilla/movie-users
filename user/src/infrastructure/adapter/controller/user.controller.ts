@@ -1,4 +1,4 @@
-import { User } from '../../../domain/model/user.entity';
+import { User } from '../../../domain/model/user';
 import { Controller, Get, Param, Put, Res, HttpStatus } from '@nestjs/common';
 import { Response } from 'express';
 import { SearchUserService } from '../../../application/caseuse/searchUser.service';
@@ -8,8 +8,8 @@ import { UpdateUserService } from '../../../application/caseuse/updateuser.servi
 @Controller()
 export class UserController {
   constructor(
-    private readonly searchUserService: SearchUserService,
-    private readonly updateUserService: UpdateUserService
+    private readonly searchUserService : SearchUserService,
+    private readonly updateUserService : UpdateUserService
   ) { }
 
   /*   @Get(':dni')

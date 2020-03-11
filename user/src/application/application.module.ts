@@ -1,7 +1,7 @@
+import { DatabaseModule } from './../infrastructure/adapter/repository/db/database.module';
 import { Module } from '@nestjs/common';
 import { SearchUserService } from './caseuse/searchUser.service';
 import { UpdateUserService } from './caseuse/updateuser.service';
-import { DatabaseModule } from '../infrastructure/adapter/repository/db/database.module';
 import { userProviders } from './providers/user';
 
 @Module({
@@ -14,7 +14,7 @@ import { userProviders } from './providers/user';
         UpdateUserService,
         ...userProviders
     ],
-    exports: [
+    exports: [ 
         SearchUserService,
         UpdateUserService,
         ...userProviders

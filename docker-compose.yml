@@ -1,0 +1,90 @@
+version: '3.7'
+
+services:
+
+  main:
+    #USER APP
+    image: user-service:latest
+    container_name: user-service
+    build:
+      context: .
+      target: development
+    volumes:
+      - .:/user/src
+    ports:
+      - 3000:3000
+    command: npm run start:dev
+    networks:
+      - webnet
+    depends_on:
+      - redis
+      - postgres
+
+  main:
+    #MOVIE APP
+    image: movie-service:latest
+    container_name: movie-service
+    build:
+      context: .
+      target: development
+    volumes:
+      - .:/user/src
+    ports:
+      - 3000:3000
+    command: npm run start:dev
+    networks:
+      - webnet
+    depends_on:
+      - redis
+      - postgres
+
+  #SONARQUBE
+  sonar:
+    image: sonarqube:latest
+    container_name: sonarqube
+    ports:
+      - "9000:9000"
+    restart: always
+
+  redis:
+    container_name: redis
+    image: redis:5
+    networks:
+      - webnet
+
+  #DATABASE
+  postgres:
+    container_name: postgresSql
+    image: postgres:latest
+    networks:
+      - webnet
+    environment:
+      POSTGRES_PASSWORD: root
+      POSTGRES_USER: root
+      POSTGRES_DB: users
+      PG_DATA: /var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  #DATABASE
+  postgres:
+    container_name: postgresSql
+    image: postgres:latest
+    networks:
+      - webnet
+    environment:
+      POSTGRES_PASSWORD: root
+      POSTGRES_USER: root
+      POSTGRES_DB: movies
+      PG_DATA: /var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+networks:
+  webnet:
+volumes:
+  pgdata:
