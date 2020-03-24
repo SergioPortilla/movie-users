@@ -5,6 +5,6 @@ import { MovieController } from './adapter/controller/movie.controller';
 @Module({
     imports: [ApplicationModule],
     controllers: [MovieController],
-    providers: [],
+    providers: [ ],
 })
 export class InfrastructureModule {}

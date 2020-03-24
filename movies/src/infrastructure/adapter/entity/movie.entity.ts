@@ -12,4 +12,10 @@ export class MovieEntity {
     @Column()
     synopsis: string;
 
+    constructor( id: Number, title: string, synopsis: string) {
+        this.id = id;
+        this.title = title;
+        this.synopsis = synopsis;
+    }   
+
 }

@@ -6,7 +6,8 @@ export const databaseProviders = [
         provide: 'DATABASE_CONNECTION',
         useFactory: async () => await createConnection({
             type: "postgres",
-            host: "127.0.0.1",
+            host: "postgresSql",
+            // host: "localhost",
             port: 5432,
             username: "root",
             password: "root",

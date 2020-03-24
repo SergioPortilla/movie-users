@@ -3,6 +3,7 @@ import { Controller, Get, Param, Put, Res, HttpStatus } from '@nestjs/common';
 import { Response } from 'express';
 import { SearchUserService } from '../../../application/caseuse/searchUser.service';
 import { UpdateUserService } from '../../../application/caseuse/updateuser.service';
+import { MessagePattern, EventPattern, Payload } from '@nestjs/microservices';
 
 
 @Controller()
@@ -22,8 +23,8 @@ export class UserController {
     return this.searchUserService.findByDni({ dni: dni });
   }
 
-  @Put(':dni')
-  updateAmountMovies(@Param('dni') dni: number): Promise<boolean> {
+  @EventPattern('notifications')
+  updateAmountMovies(@Payload()  dni: number): Promise<boolean>  {
     return this.updateUserService.UpdateAmountMovies({ dni: dni });
   }
 

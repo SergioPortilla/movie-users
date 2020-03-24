@@ -3,6 +3,7 @@ import { CreateMovieService } from './caseuse/createMovie.service';
 import { SearchMovieService } from './caseuse/searchMovie.service';
 import { movieProviders } from './providers/movie';
 import { DatabaseModule } from '../infrastructure/adapter/repository/db/database.module';
+import { UpdateUserService } from './caseuse/messages.service';
 
 @Module({
     imports: [
@@ -12,11 +13,13 @@ import { DatabaseModule } from '../infrastructure/adapter/repository/db/database
     providers: [
         CreateMovieService,
         SearchMovieService,
+        UpdateUserService,
         ...movieProviders
     ],
     exports: [
         CreateMovieService,
         SearchMovieService,
+        UpdateUserService,
         ...movieProviders
     ]
 })

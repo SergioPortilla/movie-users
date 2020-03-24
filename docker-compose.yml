@@ -2,42 +2,39 @@ version: '3.7'
 
 services:
 
-  main:
-    #USER APP
-    image: user-service:latest
+  #USER APP
+  user:
+    build:
+      context: ./user
     container_name: user-service
-    build:
-      context: .
-      target: development
     volumes:
-      - .:/user/src
+      - .:/user/src/app
+      - ./src/app/node_modules
     ports:
       - 3000:3000
-    command: npm run start:dev
+    command: npm run start:dev ./user
     networks:
       - webnet
     depends_on:
-      - redis
-      - postgres
+      - rabbitmq
+      - postgresSql
 
-  main:
-    #MOVIE APP
-    image: movie-service:latest
+  #MOVIE APP
+  movie:
+    build:
+      context: ./movies
     container_name: movie-service
-    build:
-      context: .
-      target: development
     volumes:
-      - .:/user/src
+      - .:/movies/src
     ports:
-      - 3000:3000
-    command: npm run start:dev
+      - 3001:3001
+    command: npm run start:dev ./movies
     networks:
       - webnet
     depends_on:
-      - redis
-      - postgres
-
+      - rabbitmq
+      - postgresSql
+      
   #SONARQUBE
   sonar:
     image: sonarqube:latest
@@ -46,14 +43,8 @@ services:
       - "9000:9000"
     restart: always
 
-  redis:
-    container_name: redis
-    image: redis:5
-    networks:
-      - webnet
-
   #DATABASE
-  postgres:
+  postgresSql:
     container_name: postgresSql
     image: postgres:latest
     networks:
@@ -61,28 +52,27 @@ services:
     environment:
       POSTGRES_PASSWORD: root
       POSTGRES_USER: root
-      POSTGRES_DB: users
+      POSTGRES_DB1: users
+      POSTGRES_DB2: movies
       PG_DATA: /var/lib/postgresql/data
     ports:
       - 5432:5432
     volumes:
       - pgdata:/var/lib/postgresql/data
 
-  #DATABASE
-  postgres:
-    container_name: postgresSql
-    image: postgres:latest
+  #RABBIT MQ
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - 15672:15672
+    restart: always
     networks:
       - webnet
-    environment:
-      POSTGRES_PASSWORD: root
-      POSTGRES_USER: root
-      POSTGRES_DB: movies
-      PG_DATA: /var/lib/postgresql/data
-    ports:
-      - 5432:5432
-    volumes:
-      - pgdata:/var/lib/postgresql/data
+    environment: 
+      RABBITMQ_DEFAULT_USER: root
+      RABBITMQ_DEFAULT_PASS: root
+      RABBITMQ_DEFAULT_VHOST: DSrabbitmq
+      RABBITMQ_VM_MEMORY_HIGH_WATERMARK: 1024MB
 
 networks:
   webnet:

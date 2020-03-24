@@ -3,12 +3,14 @@ import { CreateMovieService } from '../../../application/caseuse/createMovie.ser
 import { SearchMovieService } from '../../../application/caseuse/searchMovie.service';
 import { Movie } from '../../../domain/model/movie';
 import { MovieDto } from '../../../application/dto/movie.dto';
+import { Observable } from 'rxjs';
+import { UpdateUserService } from '../../../application/caseuse/messages.service';
 
 @Controller()
 export class MovieController {
     constructor(
         private readonly createMovieService : CreateMovieService,
-        private readonly searchMovieService : SearchMovieService
+        private readonly searchMovieService : SearchMovieService,
     ) { }
 
     @Get(':id')
@@ -20,10 +22,10 @@ export class MovieController {
     getAllMovies(): Promise<Movie[]> {
         return this.searchMovieService.getAllMovies()
     }
-
+    
     @Post()
     saveMovie(@Body() movieDto: MovieDto): Promise<string> {
-        return this.createMovieService.saveMovie({movie: movieDto.movie});
+        return this.createMovieService.saveMovie({movie: movieDto});
     }
 
 }
